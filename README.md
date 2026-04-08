@@ -11,6 +11,6 @@ ThreatLens is a security intelligence ingestion platform. This repository contai
 
 ## Getting Started
 
-1. Copy `.env.example` to `.env`
+1. Copy `.env.example` to `infra/.env`
 2. Run `make build && make up`
 

@@ -1,16 +1,18 @@
 .PHONY: build up down test lint
 
+COMPOSE_FILE=infra/docker-compose.yml
+
 build:
-docker compose build
+	docker compose -f $(COMPOSE_FILE) build
 
 up:
-docker compose up -d
+	docker compose -f $(COMPOSE_FILE) up -d
 
 down:
-docker compose down
+	docker compose -f $(COMPOSE_FILE) down
 
 test:
-pytest
+	pytest
 
 lint:
-ruff check .
+	ruff check .
