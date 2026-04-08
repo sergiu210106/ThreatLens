@@ -1,40 +1,53 @@
 services:
   zookeeper:
-    image: bitnami/zookeeper:latest
+    image: confluentinc/cp-zookeeper:7.6.0
     environment:
-      ALLOW_ANONYMOUS_LOGIN: "yes"
+      ZOOKEEPER_CLIENT_PORT: "2181"
+      ZOOKEEPER_TICK_TIME: "2000"
     healthcheck:
-      test: ["CMD", "zkServer.sh", "status"]
+      test: ["CMD-SHELL", "echo ruok | nc -w 2 localhost 2181 | grep imok"]
       interval: 15s
       timeout: 10s
       retries: 5
     volumes:
-      - zookeeper_data:/bitnami/zookeeper
+      - zookeeper_data:/var/lib/zookeeper/data
+      - zookeeper_log:/var/lib/zookeeper/log
     networks:
       - threatlens
 
   kafka:
-    image: bitnami/kafka:latest
+    image: confluentinc/cp-kafka:7.6.0
     depends_on:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: "1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: "1"
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: "1"
-      KAFKA_CREATE_TOPICS: raw-cves:3:1,raw-reports:3:1,raw-pastes:2:1
     healthcheck:
-      test: ["CMD", "kafka-topics.sh", "--bootstrap-server", "localhost:9092", "--list"]
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
       interval: 15s
       timeout: 10s
       retries: 5
     volumes:
-      - kafka_data:/bitnami/kafka
+      - kafka_data:/var/lib/kafka/data
     networks:
       - threatlens
+
+  kafka-init:
+    image: confluentinc/cp-kafka:7.6.0
+    depends_on:
+      - kafka
+    entrypoint: ["/bin/bash", "/scripts/kafka-init.sh"]
+    volumes:
+      - ./kafka-init.sh:/scripts/kafka-init.sh:ro
+    networks:
+      - threatlens
+    restart: "no"
 
   postgres:
     image: postgres:15-alpine
@@ -115,6 +128,7 @@ networks:
 
 volumes:
   zookeeper_data:
+  zookeeper_log:
   kafka_data:
   postgres_data:
   chroma_data:
