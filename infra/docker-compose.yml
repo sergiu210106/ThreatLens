@@ -1,0 +1,49 @@
+version: '3.9'
+services:
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - threatlens
+
+  kafka:
+    image: bitnami/kafka:latest
+    depends_on:
+      - zookeeper
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    networks:
+      - threatlens
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: $${POSTGRES_USER}
+      POSTGRES_PASSWORD: $${POSTGRES_PASSWORD}
+      POSTGRES_DB: $${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - threatlens
+
+  chromadb:
+    image: ghcr.io/chroma-core/chroma:latest
+    ports:
+      - '8000:8000'
+    volumes:
+      - chroma_data:/data
+    networks:
+      - threatlens
+
+networks:
+  threatlens:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  chroma_data:

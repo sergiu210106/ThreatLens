@@ -1,0 +1,12 @@
+version: '3.9'
+services:
+  api:
+    build: ../services/api
+    environment:
+      - KAFKA_BROKER=$${KAFKA_BROKER}
+    networks:
+      - threatlens
+
+networks:
+  threatlens:
+    external: true

@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.env
+env/
+venv/
+.venv/
+
+# Docker
+docker-compose.override.yml
+*.log
+*.pid
+**/tmp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
