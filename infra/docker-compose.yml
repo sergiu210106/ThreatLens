@@ -82,7 +82,7 @@ services:
       - threatlens
 
   spark-master:
-    image: bitnami/spark:latest
+    image: apache/spark:3.5.0
     command: ["sleep", "infinity"]
     ports:
       - "7077:7077"
@@ -91,7 +91,7 @@ services:
       - threatlens
 
   spark-worker:
-    image: bitnami/spark:latest
+    image: apache/spark:3.5.0
     depends_on:
       - spark-master
     command: ["sleep", "infinity"]

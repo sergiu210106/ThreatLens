@@ -1,20 +1,102 @@
-# Python
+# Python artifacts
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-*.env
+*.pyc
+*.pyd
+*.pyo
+*.cache
+*.cover
+*.coveragerc
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.pytype/
+cython_debug/
+*.egg-info/
+dist/
+build/
+*.egg
+pip-wheel-metadata/
+
+# Virtual environments
 env/
 venv/
 .venv/
+ENV/
+venv.bak/
+*.venv/
 
-# Docker
+# Environment and secrets
+.env
+.env.*
+*.env
+local_settings.py
+secrets.yml
+
+# Docker and local runtime
 docker-compose.override.yml
+docker-compose.local.yml
+docker-compose.*.local.yml
 *.log
 *.pid
+tmp/
+*/tmp/
 **/tmp/
+*.local
+.envrc
 
-# IDE
+# IDE and editor
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
 *.swp
+*.swo
+*.tmp
+*~
+.DS_Store
+Thumbs.db
+
+# OS generated files
+.DS_Store
+.DS_Store?
+.AppleDouble
+.LSOverride
+Icon
+ehthumbs.db
+Desktop.ini
+
+# Python package manager
+poetry.lock
+Pipfile.lock
+
+# Test reports and coverage
+htmlcov/
+coverage.xml
+nosetests.xml
+junit*.xml
+
+# Local machine-specific
+*.sqlite3
+*.db
+*.db-journal
+
+# Build artifacts
+*.o
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+*.old
+*.orig
