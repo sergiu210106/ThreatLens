@@ -28,8 +28,11 @@ This starts the core infrastructure services defined in `infra/docker-compose.ym
 - `postgres`
 - `chromadb`
 - `api`
+- `collector-reports`
 - `prometheus`
 - `grafana`
+
+The `collector-reports` service scrapes external advisories and publishes normalized report events to the `raw-reports` Kafka topic.
 
 ## Kafka setup
 

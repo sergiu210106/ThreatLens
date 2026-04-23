@@ -108,6 +108,19 @@ services:
     networks:
       - threatlens
 
+  collector-reports:
+    build:
+      context: ../services/collector-reports
+    environment:
+      KAFKA_BROKER: ${KAFKA_BROKER}
+      KAFKA_TOPIC_RAW_REPORTS: ${KAFKA_TOPIC_RAW_REPORTS}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+    depends_on:
+      - kafka
+      - kafka-init
+    networks:
+      - threatlens
+
   prometheus:
     image: prom/prometheus:latest
     ports:
